@@ -25,10 +25,10 @@ jobs:
         run: |
           docker build -f Docker/dockerfile/app.Dockerfile -t app .
           docker build -f Docker/dockerfile/web_server.Dockerfile -t web_server .
-          docker tag app ${{ secrets.DOCKERHUB_USERNAME}}/e-commerce-docker
-          docker tag web_server ${{ secrets.DOCKERHUB_USERNAME}}/e-commerce-docker-web_server
-          docker push ${{ secrets.DOCKERHUB_USERNAME}}/e-commerce-docker
-          docker push ${{ secrets.DOCKERHUB_USERNAME}}/e-commerce-docker-web_server
+          docker tag app ${{ secrets.DOCKERHUB_USERNAME}}/tester-docker
+          docker tag web_server ${{ secrets.DOCKERHUB_USERNAME}}/tester-docker-web_server
+          docker push ${{ secrets.DOCKERHUB_USERNAME}}/tester-docker
+          docker push ${{ secrets.DOCKERHUB_USERNAME}}/tester-docker-web_server
       - name: "Write config"
         run: |
           mkdir ~/.oci
