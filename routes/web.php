@@ -1,18 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\KategoriController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-use App\Http\Controllers\Admin\ProdukController as AdminProdukController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\AlamatPengirimanController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\BerandaController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CartDetailController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OrderController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PendudukController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\SuratController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,36 +19,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [BerandaController::class, 'index'])->name('beranda');
-Route::get('data-profil', [BerandaController::class, 'profil'])->name('beranda.profil');
-Route::put('data-profil/{id}', [BerandaController::class, 'updateProfil'])->name('beranda.updateprofil');
-Route::get('produk/list', [BerandaController::class, 'listProduk'])->name('beranda.listproduk');
-Route::get('produk/detail/{id}', [BerandaController::class, 'detailProduk'])->name('beranda.detailproduk');
-Route::get('cari-produk', [BerandaController::class, 'cariProduk'])->name('beranda.cariProduk');
+// Route::get('/', function () {
+//     return view('layout.home');
+// });
 
-Auth::routes(['verify' => true]);
+Auth::routes();
 
-Route::middleware(['verified'])->group(function () {
-    Route::get('edit-alamat-produk/{id}', [CartDetailController::class, 'editAlamat'])->name('editalamatproduk');
-    Route::put('update-alamat-produk/{id}', [CartDetailController::class, 'updateAlamat'])->name('updatealamatproduk');
-    Route::put('kosongkan-keranjang/{id}', [CartController::class, 'kosongkan']);
-    Route::get('api/get-count-cart', [CartController::class, 'getCount']);
-    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-    Route::resource('cart', CartController::class);
-    Route::get('upload-bukti/{id}', [OrderController::class, 'showUpload'])->name('showupload');
-    Route::post('upload-bukti', [OrderController::class, 'uploadBukti'])->name('uploadBukti');
-    Route::resource('order', OrderController::class);
-    Route::resource('detail-cart', CartDetailController::class);
-    Route::resource('alamat-pengiriman', AlamatPengirimanController::class);
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-    Route::group(['middleware' => ['admin']], function () {
-        Route::get('/profil', [UserController::class, 'profil'])->name('user.profil');
-        Route::get('transaksi/cetak', [AdminOrderController::class, 'cetak'])->name('transaksi.cetak');
+// Penduduk
+Route::get('/penduduk', [PendudukController::class, 'index'])->name('penduduk');
+Route::get('/penduduk/add', [PendudukController::class, 'add']);
+Route::post('/penduduk/simpan', [PendudukController::class, 'simpan']);
+Route::get('/penduduk/edit/{id_penduduk}', [PendudukController::class, 'edit']);
+Route::post('/penduduk/update/{id_penduduk}', [PendudukController::class, 'update']);
+Route::get('/penduduk/delete/{id_penduduk}', [PendudukController::class, 'delete']);
+Route::get('/penduduk/cari', [PendudukController::class, 'cari']);
 
-        Route::resource('dashboard', DashboardController::class)->only(['index']);
-        Route::resource('transaksi', AdminOrderController::class);
-        Route::resource('user', UserController::class);
-        Route::resource('produk', AdminProdukController::class);
-        Route::resource('kategori', KategoriController::class);
-    });
-});
+// Region
+Route::get('/wilayah', [RegionController::class, 'index'])->name('wilayah');
+Route::get('/wilayah/add', [RegionController::class, 'add']);
+Route::post('/wilayah/simpan', [RegionController::class, 'simpan']);
+Route::get('/wilayah/edit/{id_wilayah}', [RegionController::class, 'edit']);
+Route::post('/wilayah/update/{id_wilayah}', [RegionController::class, 'update']);
+Route::get('/wilayah/delete/{id_wilayah}', [RegionController::class, 'delete']);
+Route::get('/wilayah/cari', [RegionController::class, 'cari']);
+// Table
+Route::get('/surat', [SuratController::class, 'index'])->name('surat');
